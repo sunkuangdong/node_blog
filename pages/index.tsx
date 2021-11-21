@@ -7,6 +7,8 @@ import { GetServerSideProps, NextPage } from 'next'
 
 import { UAParser } from 'ua-parser-js'
 import { useEffect, useState } from 'react'
+import { createConnection, getConnection } from 'typeorm'
+import { getDatabaseConnection } from 'lib/getDatabaseConnection'
 
 type Props = {
   browser: {
@@ -40,6 +42,9 @@ export default Home
 // 都是在请求到来之后运行的
 // 不像 getStaticProps 只在 build 运行一次
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  // 初次进入页面获取
+  const connect = await getDatabaseConnection()
+  console.log('connect');
   const ua = context.req.headers["user-agent"]
   const result = new UAParser(ua).getResult()
   return {
