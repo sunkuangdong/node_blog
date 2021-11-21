@@ -43,8 +43,7 @@ export default Home
 // 不像 getStaticProps 只在 build 运行一次
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // 初次进入页面获取
-  const connect = await getDatabaseConnection()
-  console.log('connect');
+  await getDatabaseConnection()
   const ua = context.req.headers["user-agent"]
   const result = new UAParser(ua).getResult()
   return {
