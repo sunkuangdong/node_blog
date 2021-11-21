@@ -1,0 +1,44 @@
+{
+  "name": "nextjs-blog",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"next dev\" \"babel -w ./src --out-dir dist --extensions .ts,.tsx\"",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "m:create": "typeorm migration:create",
+    "m:run": "typeorm migration:run",
+    "m:revert": "typeorm migration:revert",
+    "e:create": "typeorm entity:create"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "axios": "^0.24.0",
+    "gray-matter": "^4.0.3",
+    "marked": "^4.0.3",
+    "next": "12.0.3",
+    "pg": "^8.7.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "reflect-metadata": "^0.1.13",
+    "sass": "^1.43.4",
+    "typeorm": "^0.2.40",
+    "ua-parser-js": "^1.0.2"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-decorators": "^7.16.0",
+    "@babel/plugin-proposal-do-expressions": "^7.16.0",
+    "@types/axios": "^0.14.0",
+    "@types/marked": "^4.0.0",
+    "@types/node": "^16.11.7",
+    "@types/react": "^17.0.34",
+    "@types/react-dom": "^17.0.11",
+    "@types/ua-parser-js": "^0.7.36",
+    "concurrently": "^6.4.0",
+    "eslint": "7",
+    "eslint-config-next": "12.0.3",
+    "next-images": "^1.8.2",
+    "typescript": "^4.4.4"
+  }
+}
