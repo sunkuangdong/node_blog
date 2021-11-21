@@ -1,13 +1,13 @@
-import Image from 'next/image'
+// import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Link from 'next/link'
 
-import png from "../public/1.png"
+// import png from "../public/1.png"
 import { GetServerSideProps, NextPage } from 'next'
 
 import { UAParser } from 'ua-parser-js'
-import { useEffect, useState } from 'react'
-import { createConnection, getConnection } from 'typeorm'
+// import { useEffect, useState } from 'react'
+// import { createConnection, getConnection } from 'typeorm'
 import { getDatabaseConnection } from 'lib/getDatabaseConnection'
 import { Post } from 'src/entity/Post'
 
@@ -19,7 +19,12 @@ const Home: NextPage<Props> = (props) => {
   const { posts } = props
   return (
     <div className={styles.container}>
-      {posts.map((post) => <div key={post.id}> {post.title} </div>)}
+      <h1>文章列表</h1>
+      {posts.map((post) => (
+        <Link href={`/posts/${post.id}`} key={post.id}>
+          <a>{post.title}</a>
+        </Link>
+      ))}
     </div>
   )
 }
