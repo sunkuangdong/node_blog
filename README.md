@@ -77,6 +77,10 @@ drop database blog_development;
 // 查看表内容
 select * from comments;
 ```
+## 清空数据库其中一个表
+```
+delete from users;
+```
 
 ## 退出数据库
 ```
