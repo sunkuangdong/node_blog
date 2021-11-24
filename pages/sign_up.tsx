@@ -20,7 +20,13 @@ const SignUp: NextPage = () => {
         e.preventDefault();
         axios.post('/api/v1/add_users', formData)
             .then(res => {
-
+                console.log('====================================');
+                console.log(res);
+                console.log('====================================');
+                // setErrors({
+                //     ...errors,
+                //     ...res.response.data
+                // })
             }, (err) => {
                 if (err.response && err.response.status === 422) {
                     setErrors({
