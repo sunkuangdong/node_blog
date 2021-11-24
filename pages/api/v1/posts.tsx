@@ -1,6 +1,6 @@
 import { NextApiHandler } from "next";
 
-import getPosts from "lib/posts"
+import { getPosts } from "lib/posts"
 
 const Posts: NextApiHandler = async (req, res) => {
     const fileNames = await getPosts()
