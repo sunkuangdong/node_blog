@@ -43,8 +43,12 @@ const Posts: NextApiHandler = async (req, res) => {
         const user = new User()
         user.username = username.trim()
         user.passwordDigest = md5(password)
-        // 将数据保存下来
-        await connection.manager.save(user)
+        try {
+            // 将数据保存下来
+            await connection.manager.save(user)
+        } catch (err) {
+            console.log(err)
+        }
         // 保存到数据库之后将数据返回给前端
         res.statusCode = 200
         res.write(JSON.stringify(user))

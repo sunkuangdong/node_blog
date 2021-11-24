@@ -4,7 +4,7 @@ export class AddUniqueUsernameTooUsers1637742717434 implements MigrationInterfac
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         // 创建一个索引
-        // 作用是如果数据库中有和你传的想通过的username
+        // 作用是如果数据库中存在和你传的username相同的值
         // 就无法创建这个索引
         await queryRunner.createIndex("users",
             new TableIndex({

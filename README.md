@@ -29,11 +29,6 @@ docker run -v "$PWD/blog-data":/var/lib/postgresql/data -p 5432:5432 -e POSTGRES
 docker run -v "blog-data":/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_USER=blog -e POSTGRES_HOST_AUTH_METHOD=trust -d postgres:12.2
 ```
 
-## 创建数据库
-```
-CREATE DATABASE blog_development ENCODING 'UTF8' LC_COLLATE 'en_US.utf8' LC_CTYPE 'en_US.utf8';
-```
-
 ## 进入当前的虚拟机
 ```
 docker exec -it 7af929b62444 bash
@@ -48,22 +43,20 @@ psql -U blog
 ```
 \l
 ```
-## 创建数据库
-```
-CREATE DATABASE blog_development ENCODING 'UTF8' LC_COLLATE 'en_US.utf8' LC_CTYPE 'en_US.utf8';
-```
 
 ## 数据库表
 ```
 yarn m:run
 node dist/seed.js
 ```
+#### 删除表、创建数据库、链接表
 
-
-#### 删除表、链接表
 ```
 // 删除
 drop database blog_development;
+
+// 创建
+CREATE DATABASE blog_development ENCODING 'UTF8' LC_COLLATE 'en_US.utf8' LC_CTYPE 'en_US.utf8';
 
 // 链接
 \c blog_development
