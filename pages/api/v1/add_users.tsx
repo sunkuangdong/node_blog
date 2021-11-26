@@ -1,10 +1,9 @@
 import { getDatabaseConnection } from "lib/getDatabaseConnection";
-import md5 from "md5";
 import { NextApiHandler } from "next";
 import { User } from "src/entity/User";
 
 
-const Posts: NextApiHandler = async (req, res) => {
+const Users: NextApiHandler = async (req, res) => {
     // 获取用户上传的参数 通过req.body
     const { username, password, passwordConfirmation } = req.body;
     const connection = await getDatabaseConnection()
@@ -27,4 +26,4 @@ const Posts: NextApiHandler = async (req, res) => {
     res.end()
 }
 
-export default Posts;
+export default Users;
