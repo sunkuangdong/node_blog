@@ -20,6 +20,8 @@ const SignUp: NextPage = () => {
         e.preventDefault();
         axios.post('/api/v1/add_users', formData)
             .then(res => {
+                window.alert("注册成功")
+                window.location.href = '/sign_in';
                 setErrors({
                     username: [],
                     password: [],
@@ -69,7 +71,7 @@ const SignUp: NextPage = () => {
                     {errors.passwordConfirmation?.length > 0 && <div> {errors.passwordConfirmation.join(",")} </div>}
                 </div>
                 <div>
-                    <button>提交</button>
+                    <button>注册</button>
                 </div>
             </form>
         </>
