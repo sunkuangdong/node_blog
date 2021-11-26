@@ -14,16 +14,19 @@ const SignIn: NextPage = () => {
     })
     const onSubmit = useCallback((e) => {
         e.preventDefault();
+
         axios.post("/api/v1/sessions", formData)
             .then((res) => {
+                setErrors({
+                    username: [],
+                    password: [],
+                })
                 window.alert("登陆成功")
                 // window.location.href = "/sessions"
             }, (err) => {
                 if (err.response) {
                     const response: AxiosResponse = err.response
-                    setErrors({
-                        ...response.data
-                    })
+                    setErrors(response.data)
                 }
             })
     }, [formData])
