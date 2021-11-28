@@ -59,8 +59,8 @@ const SignIn: NextPage<{ user: User }> = (props) => {
                     onChange: e => onChange("password", e.target.value),
                     errors: errors.password
                 }
-            ]} onSubmit={onSubmit} >
-                <button>登陆</button>
+            ]} onSubmit={onSubmit} buttons={<div><button>登陆</button></div>}>
+                
             </Form>
         </>
     )

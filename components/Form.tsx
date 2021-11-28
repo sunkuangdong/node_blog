@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, FormEventHandler } from 'react';
+import React, { ChangeEventHandler, FormEventHandler, ReactElement } from 'react';
 
 type Props = {
     onSubmit: FormEventHandler
@@ -7,12 +7,13 @@ type Props = {
         type: "text" | "password",
         value: string | number,
         onChange: ChangeEventHandler<HTMLInputElement>,
-        errors: string[]
-    }[]
+        errors: string[],
+    }[],
+    buttons: ReactElement
 }
 
 const Form: React.FC<Props> = (props) => {
-    const { fields, onSubmit, ...rest } = props
+    const { fields, onSubmit, buttons, ...rest } = props
     return (
         <form action="" onSubmit={onSubmit}>
             {fields.map((field, index) =>
@@ -26,9 +27,7 @@ const Form: React.FC<Props> = (props) => {
                     </select> */}
                 </div>
             )}
-            <div>
-                {rest}
-            </div>
+            { buttons }
         </form>
     )
 }
