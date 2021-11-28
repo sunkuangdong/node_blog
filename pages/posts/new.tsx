@@ -3,7 +3,6 @@ import useForm from "hooks/useForm";
 import { NextPage } from "next";
 
 const PostsNew: NextPage = () => {
-    // initFormData, initError, fields, onSubmit
     const initFormData = { title: '', content: '' }
     const buttons = <div> <button>提交</button> </div>
     const onSubmit = (formData: typeof initFormData) => {
