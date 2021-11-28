@@ -4,9 +4,9 @@ type Props = {
     onSubmit: FormEventHandler
     fields: {
         label: string,
-        type: "text" | "password",
+        type: "text" | "password" | 'textarea',
         value: string | number,
-        onChange: ChangeEventHandler<HTMLInputElement>,
+        onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>,
         errors: string[],
     }[],
     buttons: ReactElement
@@ -19,7 +19,9 @@ const Form: React.FC<Props> = (props) => {
             {fields.map((field, index) =>
                 <div key={index}>
                     <label>{field.label}</label>
-                    <input type={field.type} value={field.value} onChange={field.onChange} />
+                    {field.type === 'textarea' ?
+                        <textarea value={field.value} onChange={field.onChange}>{field.value}</textarea> :
+                        <input type={field.type} value={field.value} onChange={field.onChange} />}
                     {field.errors?.length > 0 && <div>{field.errors.join(', ')}</div>}
                     {/* <select>
                         <option value="">--Please choose an option--</option>
@@ -27,7 +29,7 @@ const Form: React.FC<Props> = (props) => {
                     </select> */}
                 </div>
             )}
-            { buttons }
+            {buttons}
         </form>
     )
 }
