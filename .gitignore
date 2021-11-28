@@ -6,6 +6,7 @@
 /.history/
 .pnp.js
 /blog-data
+/.env.local
 
 # testing
 /coverage
