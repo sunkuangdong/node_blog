@@ -67,9 +67,7 @@ export default SignIn;
 
 // 通过 ssr 方式传递 props
 // 传递我们的 session
-// @ts-ignore
 export const getServerSideProps: GetServerSideProps = WithSession(async (context) => {
-    // @ts-ignore
     const user = context.req.session.get('currentUser');
     return {
         props: {
