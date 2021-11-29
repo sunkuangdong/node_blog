@@ -1,4 +1,4 @@
-import { type } from "os";
+import { AxiosResponse } from "axios";
 import React, { ReactChild, useCallback, useState } from "react";
 
 type Field<T> = {
@@ -11,11 +11,15 @@ type useFormOptions<T> = {
     initFormData: T;
     fields: Field<T>[];
     buttons: ReactChild;
-    onSubmit: (fd: T) => void
+    submit: {
+        request: (fromData: T) => Promise<AxiosResponse<T>>
+        message: string
+    };
+    routers?: string
 }
 
 function useForm<T>(options: useFormOptions<T>) {
-    const { initFormData, onSubmit, fields, buttons } = options;
+    const { initFormData, submit, fields, buttons, routers = null } = options;
     // 初始化
     const [formData, setFormData] = useState(initFormData)
     // e 是和传递进来的 initFormData 有关系的
@@ -39,19 +43,29 @@ function useForm<T>(options: useFormOptions<T>) {
     // 处理一下 onSubmit
     const _onSubmit = useCallback((e) => {
         e.preventDefault()
-        onSubmit(formData)
-    }, [formData, onSubmit])
+        submit.request(formData).then(() => {
+            window.alert(submit.message)
+            routers ? window.location.href = routers : ""
+        }, (err) => {
+            if (err.response) {
+                const response: AxiosResponse = err.response
+                if (response.status === 422) {
+                    setErrors(response.data)
+                }
+            }
+        })
+    }, [formData, submit]);
     const form = (
-        <form action="" onSubmit={_onSubmit}>
-            {fields.map((field, index) =>
-                <div key={index}>
+        <form onSubmit={_onSubmit}>
+            {fields.map((field) =>
+                <div key={field.key.toString()}>
                     <label>{field.label}</label>
                     {field.type === 'textarea' ?
                         <textarea value={formData[field.key].toString()}
-                            onChange={e => onChange(field.key, e.target.value)}>
-                            {formData[field.key]}
-                        </textarea> :
-                        <input type={field.type} value={formData[field.key].toString()} onChange={e => onChange(field.key, e.target.value)} />}
+                            onChange={e => onChange(field.key, e.target.value)} /> :
+                        <input type={field.type}
+                            value={formData[field.key].toString()}
+                            onChange={e => onChange(field.key, e.target.value)} />}
                     {errors[field.key]?.length > 0 && <div>{errors[field.key].join(', ')}</div>}
                 </div>
             )}
