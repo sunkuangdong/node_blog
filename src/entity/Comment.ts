@@ -8,6 +8,6 @@ export class Comment {
     @Column("text") content: string;
     @CreateDateColumn() createdAt: Date;
     @UpdateDateColumn() updatedAt: Date;
-    @ManyToOne(type => User, user => user.comments) user: User;
-    @ManyToOne(type => Post, post => post.comments) post: Post;
+    @ManyToOne("User", "comments") user: User;
+    @ManyToOne("Post", "comments") post: Post;
 }

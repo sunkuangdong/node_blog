@@ -12,8 +12,8 @@ export class User {
     @Column("varchar") passwordDigest: string;
     @CreateDateColumn() createdAt: Date;
     @UpdateDateColumn() updatedAt: Date;
-    @OneToMany(type => Post, post => post.author) posts: Post[];
-    @OneToMany(type => Comment, comment => comment.user) comments: Comment[];
+    @OneToMany("Post", "author") posts: Post[];
+    @OneToMany("Comment", "user") comments: Comment[];
 
     errors = {
         username: [] as string[],
