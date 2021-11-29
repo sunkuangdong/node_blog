@@ -13,7 +13,7 @@ type useFormOptions<T> = {
     buttons: ReactChild;
     submit: {
         request: (fromData: T) => Promise<AxiosResponse<T>>
-        message: string
+        success: () => void
     };
     routers?: string
 }
@@ -44,13 +44,16 @@ function useForm<T>(options: useFormOptions<T>) {
     const _onSubmit = useCallback((e) => {
         e.preventDefault()
         submit.request(formData).then(() => {
-            window.alert(submit.message)
+            submit.success()
             routers ? window.location.href = routers : ""
         }, (err) => {
             if (err.response) {
                 const response: AxiosResponse = err.response
                 if (response.status === 422) {
                     setErrors(response.data)
+                } else if (response.status === 401) {
+                    window.alert("请先登陆")
+                    window.location.href = `/sign_in?return_to=${encodeURIComponent(window.location.pathname)}`
                 }
             }
         })

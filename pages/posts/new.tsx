@@ -14,7 +14,10 @@ const PostsNew: NextPage<{ user: User }> = (props) => {
         buttons: <div> <button>提交</button> </div>,
         submit: {
             request: async formData => await axios.post('/api/v1/posts', formData),
-            message: "提交成功"
+            success: () => {
+                window.alert("提交成功")
+                window.location.href = '/posts'
+            }
         }
     })
 

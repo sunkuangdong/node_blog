@@ -12,16 +12,18 @@ const Posts: NextApiHandler = withSession(async (req, res) => {
         post.content = content
         // @ts-ignore
         const user = req.session.get("currentUser")
+        if (!user) {
+            // 403 没权限，登陆也没权限
+            // 401 没登录
+            res.statusCode = 401
+            res.end()
+            return
+        }
         post.author = user.id
         const connection = await getDatabaseConnection()
         await connection.manager.save(post)
         res.json(post)
     }
-    // const fileNames = await getPosts()
-    // res.statusCode = 200
-    // res.setHeader("Content-Type", "application/json")
-    // res.write(JSON.stringify(fileNames))
-    // res.end()
 })
 
 export default Posts;
