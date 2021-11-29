@@ -1,41 +1,42 @@
-import { NextPage } from "next";
-import React from "react";
-import { getPosts } from "lib/posts";
-import Link from "next/link";
-type Posts = {
-  id: string;
-}
-type Props = {
-  posts: Posts[]
-}
+import styles from 'styles/Home.module.css'
+import Link from 'next/link'
+import { GetServerSideProps, NextPage } from 'next'
+import { UAParser } from 'ua-parser-js'
+import { getDatabaseConnection } from 'lib/getDatabaseConnection'
+import { Post } from 'src/entity/Post'
 
+type Props = {
+  posts: Post[]
+}
+// props 为 getServerSideProps return的返回值
 const PostsIndex: NextPage<Props> = (props) => {
   const { posts } = props
-  // 控制台可以打印出 posts
-  // 本来是后端的 为什么前端也可以拿到？
-  // 同构
-  // 前端拿到的方式是通过script标签，对里面内容进行反序列化
-  // console.log(posts);
   return (
-    <div>
-      <h1>服务端渲染</h1>
-      {posts.map(item => <div key={item.id}>
-        <Link href={`/posts/${item.id}`}>
-          <a>{item.id}</a>
+    <div className={styles.container}>
+      <h1>文章列表</h1>
+      {posts.map((post) => (
+        <Link href={`/posts/${post.id}`} key={post.id}>
+          <a>{post.title}</a>
         </Link>
-      </div>)}
+      ))}
     </div>
   )
 }
-// 只要请求了 http://localhost:3000/posts 就运行了 PostsIndex 函数
-export default PostsIndex;
+export default PostsIndex
 
-// 在生产环境中，他只会运行一次
-// 在构建的时候会利用return值进行预渲染
-export const getStaticProps = async () => {
-  const posts = await getPosts()
+// 不管是开发环境还是生产环境
+// 都是在请求到来之后运行的
+// 不像 getStaticProps 只在 build 运行一次
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // 初次进入页面链接数据库
+  const connection = await getDatabaseConnection()
+  // 找到Post数据库
+  const posts = await connection.manager.find(Post)
+  const ua = context.req.headers["user-agent"]
+  const result = new UAParser(ua).getResult()
   return {
     props: {
+      browser: result.browser,
       posts: JSON.parse(JSON.stringify(posts))
     }
   }
