@@ -36,22 +36,22 @@ var _Comment = require("./entity/Comment");
             p1.title = 'Post 1';
             p1.content = "My First Post";
             p1.author = u1;
-            _context.next = 13;
+            _context.next = 12;
             return manager.save(p1);
 
-          case 13:
+          case 12:
             //
             c1 = new _Comment.Comment();
             c1.user = u1;
             c1.post = p1;
             c1.content = 'Awesome!';
-            _context.next = 19;
+            _context.next = 18;
             return manager.save(c1);
 
-          case 19:
+          case 18:
             connection.close();
 
-          case 20:
+          case 19:
           case "end":
             return _context.stop();
         }

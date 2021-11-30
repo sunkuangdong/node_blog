@@ -22,7 +22,7 @@ docker rm 7f40bedb17dd
 ```
 mkdir blog-data
 
-docker run -v "$PWD/blog-data":/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_USER=blog -e POSTGRES_HOST_AUTH_METHOD=trust -d postgres:12.2
+docker run --network=network1  --name psql1 -v "$PWD/blog-data":/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_USER=blog -e POSTGRES_HOST_AUTH_METHOD=trust -d postgres:12.2 
 
 或者旧版 Windows Docker 客户端运行下面的代码
 
@@ -99,3 +99,9 @@ yarn m:create -n CreateUsers
 ```
 yarn m:run
 ```
+
+#### 运行镜像
+docker run --network=network1 --name=web1 -p 3000:3000 -d sunkuangdong/node-web-app
+
+#### 链接镜像
+docker logs <container id>
