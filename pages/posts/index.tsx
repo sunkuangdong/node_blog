@@ -4,6 +4,7 @@ import { GetServerSideProps, NextPage } from 'next'
 import { UAParser } from 'ua-parser-js'
 import { getDatabaseConnection } from 'lib/getDatabaseConnection'
 import { Post } from 'src/entity/Post'
+import usePage from 'hooks/usePage'
 const qs = require('querystring')
 
 type Props = {
@@ -11,10 +12,13 @@ type Props = {
   count: number;
   perPage: number;
   page: number;
+  totalPage: number;
 }
 // props 为 getServerSideProps return的返回值
 const PostsIndex: NextPage<Props> = (props) => {
-  const { posts, count, perPage, page } = props
+  const { posts } = props
+  const urlMaker = (page: number) => `?page=${page}`
+  const usePager = usePage({ ...props, urlMaker })
   return (
     <div className={styles.container}>
       <h1>文章列表</h1>
@@ -26,14 +30,7 @@ const PostsIndex: NextPage<Props> = (props) => {
         </div>
       ))}
       <footer>
-        共{count}篇文章：每页{perPage}篇文章：当前第{page}页 
-        <Link href={`?page=${page - 1}`}>
-          <a>上一页</a>
-        </Link>
-        |
-        <Link href={`?page=${page + 1}`}>
-          <a>下一页</a>
-        </Link>
+        {usePager}
       </footer>
     </div>
   )
@@ -50,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const search = context.req.url.substring(index + 1)
   const query = qs.parse(search)
   const page = parseInt(query.page.toString()) || 1
-  const perPage = 2
+  const perPage = 1
   // 初次进入页面链接数据库
   const connection = await getDatabaseConnection()
   // 找到Post数据库, 取出对应的分页数据
@@ -64,6 +61,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       count,
       perPage,
       page,
+      totalPage: Math.ceil(count / perPage)
     }
   }
 }
