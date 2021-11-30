@@ -11,8 +11,6 @@ createConnection().then(async connection => {
     u1.username = 'frank'
     u1.passwordDigest = 'xxx'
     await manager.save(u1);
-    console.log(u1.id);
-    // 
     const p1 = new Post()
     p1.title = 'Post 1'
     p1.content = "My First Post"

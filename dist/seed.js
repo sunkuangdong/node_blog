@@ -32,8 +32,6 @@ var _Comment = require("./entity/Comment");
             return manager.save(u1);
 
           case 6:
-            console.log(u1.id); // 
-
             p1 = new _Post.Post();
             p1.title = 'Post 1';
             p1.content = "My First Post";
