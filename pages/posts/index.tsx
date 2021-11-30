@@ -47,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const search = context.req.url.substring(index + 1)
   const query = qs.parse(search)
   const page = parseInt(query.page?.toString()) || 1
-  const perPage = 1
+  const perPage = 10
   // 初次进入页面链接数据库
   const connection = await getDatabaseConnection()
   // 找到Post数据库, 取出对应的分页数据
