@@ -11,7 +11,9 @@ const Sessions: NextApiHandler = async (req, res) => {
     signIn.password = password
     await signIn.validate()
     if (!signIn.hasError()) {
+        //@ts-ignore
         req.session.set("currentUser", signIn.user)
+        //@ts-ignore
         await req.session.save()
         res.statusCode = 200
         res.write(JSON.stringify(signIn.user))
