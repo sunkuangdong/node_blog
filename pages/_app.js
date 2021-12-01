@@ -1,4 +1,5 @@
 import '../styles/globals.scss'
+import "github-markdown-css"
 import Head from 'next/head'
 
 function App({ Component, pageProps }) {

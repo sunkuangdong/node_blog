@@ -4,6 +4,7 @@ import { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
 import { Post } from 'src/entity/Post';
 // import UAParser from 'ua-parser-js';
+import { marked } from 'marked';
 
 
 type Posts = {
@@ -19,9 +20,29 @@ const postsShow: NextPage<Props> = (props) => {
     const { post } = props;
     return (
         <>
-            <h1>{post.title}</h1>
-            <article dangerouslySetInnerHTML={{ __html: post.content }}>
-            </article>
+            <div className="wrapper">
+                <h1>{post.title}</h1>
+                <article className="markdown-body"
+                    dangerouslySetInnerHTML={{ __html: marked(post.content) }}>
+                </article>
+            </div>
+            <style jsx>{`
+            .actions > *{
+                margin: 4px; 
+            }
+            .actions > *:first-child{
+                margin-left: 0; 
+            }
+            .wrapper{
+                max-width: 800px;
+                margin: 16px auto;
+                padding: 0 16px;
+            }
+            h1{ 
+                padding-bottom: 16px; 
+                border-bottom: 1px solid #666; 
+            }
+            `}</style>
         </>
     )
 }
