@@ -31,7 +31,7 @@ const usePage = (options: Options) => {
             result.concat(num) : result.concat(-1, num)
             , [])
 
-    const pager = (
+    const pager = totalPage > 1 ? (
         <div className="wrapper">
             <Link href={urlMaker(page - 1)}>
                 <button disabled={page <= 1}>上一页</button>
@@ -54,15 +54,16 @@ const usePage = (options: Options) => {
             <style jsx>
                 {`
                     .wrapper{
-                        margin:0 -8px;
+                        margin: 0 -8px;
+                        padding: 8px 0;
                     }
                     .wrapper>a, .wrapper>span{
-                        margin:0 8px;
+                        margin: 0 8px;
                     }
                 `}
             </style>
         </div>
-    )
+    ) : null
     return pager
 }
 
