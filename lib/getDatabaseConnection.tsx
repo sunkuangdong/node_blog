@@ -10,6 +10,8 @@ const create = async () => {
     // 没有默认的就创建链接
     return await createConnection({
         ...config,
+        host: process.env.NODE_ENV === "production" ? "localhost" : config.host,
+        database: process.env.NODE_ENV === "production" ? "blog_production" : "blog_development",
         entities: [Post, User, Comment]
     })
 }
