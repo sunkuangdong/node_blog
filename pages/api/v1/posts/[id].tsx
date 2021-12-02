@@ -18,6 +18,12 @@ const Posts: NextApiHandler = withSession(async (req, res) => {
         }
         await connection.manager.save(post);
         res.json(post);
+    } else if (req.method === "DELETE") {
+        const connection = await getDatabaseConnection()
+        const id = req.query.id.toString()
+        const result = await connection.manager.delete("Post", id)
+        result.affected >= 0 ? res.statusCode = 200 : res.statusCode = 400
+        res.end()
     }
 })
 export default Posts
