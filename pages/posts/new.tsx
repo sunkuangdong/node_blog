@@ -11,7 +11,7 @@ const PostsNew: NextPage<{ user: User }> = (props) => {
             { label: "标题", type: "text", key: "title" },
             { label: "内容", type: "textarea", key: "content" }
         ],
-        buttons: <div> <button>提交</button> </div>,
+        buttons: <div className="actions"> <button>提交</button> </div>,
         submit: {
             request: async formData => await axios.post('/api/v1/posts', formData),
             success: () => {
@@ -41,7 +41,6 @@ const PostsNew: NextPage<{ user: User }> = (props) => {
                 }
                 .postsNew .actions {
                     text-align:center;
-                    background: #ddd;
                     padding: 4px 0;
                 }
             `}</style>

@@ -1,10 +1,12 @@
 import { AxiosResponse } from "axios";
 import React, { ReactChild, useCallback, useState } from "react";
+import cs from 'classnames';
 
 type Field<T> = {
     label: string;
     type: 'text' | 'password' | 'textarea';
     key: keyof T;
+    className?: string;
 }
 
 type useFormOptions<T> = {
@@ -61,18 +63,42 @@ function useForm<T>(options: useFormOptions<T>) {
     const form = (
         <form onSubmit={_onSubmit}>
             {fields.map((field) =>
-                <div key={field.key.toString()}>
-                    <label>{field.label}</label>
-                    {field.type === 'textarea' ?
-                        <textarea value={formData[field.key].toString()}
-                            onChange={e => onChange(field.key, e.target.value)} /> :
-                        <input type={field.type}
-                            value={formData[field.key].toString()}
-                            onChange={e => onChange(field.key, e.target.value)} />}
+                <div key={field.key.toString()}
+                    className={cs('field', `field-${field.key}`, field.className)}>
+                    <label className="label">
+                        <span className="label-text">{field.label}</span>
+                        {field.type === 'textarea' ?
+                            <textarea className="control" value={formData[field.key].toString()}
+                                onChange={e => onChange(field.key, e.target.value)} /> :
+                            <input className="control" type={field.type}
+                                value={formData[field.key].toString()}
+                                onChange={e => onChange(field.key, e.target.value)} />}
+                    </label>
                     {errors[field.key]?.length > 0 && <div>{errors[field.key].join(', ')}</div>}
                 </div>
             )}
-            {buttons}
+            <div>
+                {buttons}
+            </div>
+            <style jsx>{`
+            .field {
+                margin: 8px 0;
+            }
+            .label {
+                display:flex;
+                line-height: 32px;
+            } 
+            input {
+                height: 32px;
+            }
+            .label-text{
+                white-space: nowrap;
+                margin-right: 1em;
+            }
+            .control{
+                width: 100%;
+            }
+            `}</style>
         </form>
     )
     return {
