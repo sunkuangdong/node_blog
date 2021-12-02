@@ -20,7 +20,7 @@ const PostsEdit: NextPage<Props> = (props) => {
         ],
         buttons: <div className="actions"> <button>提交</button> </div>,
         submit: {
-            request: async formData => await axios.patch(`/api/v1/posts/${id}`, formData),
+            request: async formData => await axios.patch(`/api/v1/posts/${id}`, {...formData, id}),
             success: () => {
                 window.alert("提交成功")
                 window.location.href = '/posts'
