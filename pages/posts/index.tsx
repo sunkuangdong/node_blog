@@ -1,10 +1,11 @@
-import styles from 'styles/Home.module.css'
 import Link from 'next/link'
 import { GetServerSideProps, NextPage } from 'next'
 import { UAParser } from 'ua-parser-js'
 import { getDatabaseConnection } from 'lib/getDatabaseConnection'
 import { Post } from 'src/entity/Post'
 import usePage from 'hooks/usePage'
+import withSession from 'lib/withSession'
+import { User } from 'src/entity/User'
 const qs = require('querystring')
 
 type Props = {
@@ -13,16 +14,18 @@ type Props = {
   perPage: number;
   page: number;
   totalPage: number;
+  currentUser: User | null;
 }
 // props 为 getServerSideProps return的返回值
 const PostsIndex: NextPage<Props> = (props) => {
-  const { posts } = props
+  const { posts, currentUser } = props
   const urlMaker = (page: number) => `?page=${page}`
   const usePager = usePage({ ...props, urlMaker })
   return (
     <div className="posts">
       <header>
         <h1>文章列表</h1>
+        {currentUser && <Link href={`/posts/new`}><a className="add">新增文章</a></Link>}
       </header>
       {posts.map((post, index) => (
         <div key={index} className="onePost">
@@ -40,6 +43,9 @@ const PostsIndex: NextPage<Props> = (props) => {
         margin: 0 auto;
         padding: 16px; 
       } 
+      .add {
+        color: steelblue;
+      }
       .posts >header{
         display:flex;
         align-items: center;
@@ -68,12 +74,13 @@ export default PostsIndex
 // 不管是开发环境还是生产环境
 // 都是在请求到来之后运行的
 // 不像 getStaticProps 只在 build 运行一次
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = withSession(async (context) => {
   // 获取url参数
   const ua = context.req.headers["user-agent"]
   const index = context.req.url.indexOf("?")
   const search = context.req.url.substring(index + 1)
   const query = qs.parse(search)
+  const currentUser = context.req.session.get('currentUser') || null
   const page = parseInt(query.page?.toString()) || 1
   const perPage = 10
   // 初次进入页面链接数据库
@@ -85,6 +92,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       browser: result.browser,
+      currentUser,
       posts: JSON.parse(JSON.stringify(posts)),
       count,
       perPage,
@@ -92,4 +100,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       totalPage: Math.ceil(count / perPage)
     }
   }
-}
+})

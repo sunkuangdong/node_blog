@@ -22,10 +22,30 @@ const PostsNew: NextPage<{ user: User }> = (props) => {
     })
 
     return (
-        <div>
-            {props.user && <div>当前登陆用户为：{props.user.username}</div>}
-            {form}
-        </div>
+        <>
+            <div className="postsNew">
+                <h1>新增文章</h1>
+                <div className="form-wrapper">{form}</div>
+            </div>
+            <style jsx global>{`
+                .form-wrapper {
+                    padding: 16px;
+                }
+                .postsNew .field-content textarea {
+                    height: 20em; 
+                    resize: none;
+                }
+                .postsNew .label-text {
+                    width: 4em;
+                    text-align:right;
+                }
+                .postsNew .actions {
+                    text-align:center;
+                    background: #ddd;
+                    padding: 4px 0;
+                }
+            `}</style>
+        </>
     )
 }
 
